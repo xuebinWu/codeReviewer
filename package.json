@@ -1,0 +1,92 @@
+{
+	"name": "codereviewer",
+	"displayName": "codeReviewer",
+	"description": "",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.55.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:codeReviewer.codeReviewer",
+		"onCommand:codeReviewer.goFix"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"menus": {
+			"editor/context": [{
+				"when": "editorHasSelection",
+				"command": "codeReviewer.codeReviewer",
+				"group": "7_modification"
+			},{
+				"when": "resourceFilename == storeFile.csv",
+				"command": "codeReviewer.goFix",
+				"group": "7_modification"
+			}]
+		},
+		"keybindings": [{
+			"command": "codeReviewer.codeReviewer",
+			"key": "ctrl+shift+c",
+			"mac": "cmd+shift+c",
+			"when": "editorHasSelection"
+		}, {
+			"command": "codeReviewer.goFix",
+			"key": "ctrl+shift+f",
+			"mac": "cmd+shift+f",
+			"when": "resourceFilename == storeFile.csv"
+		}],
+		"commands": [
+			{
+				"command": "codeReviewer.codeReviewer",
+				"title": "codeReviewer 标注问题代码"
+			},
+			{
+				"command": "codeReviewer.goFix",
+				"title": "codeReviewer_goFix 修复问题代码"
+			}
+		],
+		"colors": [
+			{
+				"id": "codeReviewer.codeBackground",
+				"description": "Background decoration color for selected code",
+				"defaults": {
+					"dark": "#fc570b55",
+					"light": "#fc570b55",
+					"highContrast": "#fc570b55"
+				}
+			}
+		],
+		"views": {
+			"explorer": [
+				{
+					"type": "webview",
+					"id": "codeReviewer.codeReviewer",
+					"name": "mark bad code"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.55.0",
+		"@types/glob": "^7.1.3",
+		"@types/mocha": "^8.0.4",
+		"@types/node": "^12.11.7",
+		"eslint": "^7.19.0",
+		"@typescript-eslint/eslint-plugin": "^4.14.1",
+		"@typescript-eslint/parser": "^4.14.1",
+		"glob": "^7.1.6",
+		"mocha": "^8.2.1",
+		"typescript": "^4.1.3",
+		"vscode-test": "^1.5.0"
+	}
+}
