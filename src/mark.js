@@ -10,8 +10,8 @@
 		vscode.postMessage({ type: 'add', value: notes });
 	});
 	
-	document.getElementById('fixed-mark-button').addEventListener('click', () => {
-		vscode.postMessage({ type: 'fixed' });
+	document.getElementById('resolve-mark-button').addEventListener('click', () => {
+		vscode.postMessage({ type: 'resolved' });
 });
 
 }());

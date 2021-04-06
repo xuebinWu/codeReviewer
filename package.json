@@ -11,7 +11,7 @@
 	],
 	"activationEvents": [
 		"onCommand:codeReviewer.codeReviewer",
-		"onCommand:codeReviewer.goFix"
+		"onCommand:codeReviewer.goResolve"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -21,8 +21,8 @@
 				"command": "codeReviewer.codeReviewer",
 				"group": "7_modification"
 			},{
-				"when": "resourceFilename == storeFile.csv",
-				"command": "codeReviewer.goFix",
+				"when": "resourceFilename == codeReviewer.csv",
+				"command": "codeReviewer.goResolve",
 				"group": "7_modification"
 			}]
 		},
@@ -32,19 +32,19 @@
 			"mac": "cmd+shift+c",
 			"when": "editorHasSelection"
 		}, {
-			"command": "codeReviewer.goFix",
+			"command": "codeReviewer.goResolve",
 			"key": "ctrl+shift+f",
 			"mac": "cmd+shift+f",
-			"when": "resourceFilename == storeFile.csv"
+			"when": "resourceFilename == codeReviewer.csv"
 		}],
 		"commands": [
 			{
 				"command": "codeReviewer.codeReviewer",
-				"title": "codeReviewer 标注问题代码"
+				"title": "标注问题代码 (codeReviewer)"
 			},
 			{
-				"command": "codeReviewer.goFix",
-				"title": "codeReviewer_goFix 修复问题代码"
+				"command": "codeReviewer.goResolve",
+				"title": "跳转问题代码 (codeReviewer)"
 			}
 		],
 		"colors": [

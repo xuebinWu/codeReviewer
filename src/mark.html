@@ -2,15 +2,8 @@
 			<html lang="en">
 			<head>
 				<meta charset="UTF-8">
-
-				<!--
-					Use a content security policy to only allow loading images from https or from our extension directory,
-					and only allow scripts that have a specific nonce.
-				-->
-
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
 				
-				<link href="${styleResetUri}" rel="stylesheet">
 				<title>Mark Bad Codes</title>
 				<style>
 					.form {
@@ -22,7 +15,6 @@
   border: 1px solid rgb(122,115,116);
   /* border-radius: 15px; */
   font-size: 14px;
-  color: rgb(122,115,116);
 }
 
 input, textarea {
@@ -53,6 +45,7 @@ textarea {
 
 .marginTop {
   margin-top: 15px;
+  word-break: break-all;
 }
 
 button {
@@ -69,32 +62,22 @@ button {
   border-radius: 5px;
   color: #fff;
 }
-button.delete {
-  /* 这个外边距的大小与label和文本输入框之间的间距差不多 */
-  background-color: rgb(222,28,49); /* Green */
-  margin-left: 20px;
-}
 				</style>
 			</head>
 			<body>
 				<div class="form">
-					<div class="marginTop">file path: ${_document.fileName}${_document.fileName}</div>
-					<!-- <div>
-						${_document.fileName}
-					</div> -->
+					<div class="marginTop">file: ${_document.fileNamewedocument.fileName}</div>
+					<div class="marginTop">position: from line 201 to line 221</div>
 					<div class="marginTop">notes:</div>
 					<div>
 						<textarea id="notes" maxlength="100"></textarea>
 					</div>
 					<div>
 						<button class="marginTop" id="add-mark-button">Add Mark</button>
-						<button class="marginTop delete" id="delete-mark-button">Delete Mark</button>
+						<!-- <button class="marginTop delete" id="delete-mark-button">Delete Mark</button> -->
 					</div>
 				</div>
 
-				<script>
-						console.log('23333');
-				</script>
 				<script src="${scriptUri}"></script>
 			</body>
 			</html>

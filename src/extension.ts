@@ -9,14 +9,14 @@ import * as fs from 'fs';
 let _activeEditor:vscode.TextEditor;
 let _storeFile:vscode.Uri;
 let _extensionUri:vscode.Uri;
-let _fixActiveLine = 0;
+let _toResolveLine = 0;
 
 export function activate(context: vscode.ExtensionContext) {
 	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "codeReviewer" is now active!');
 
 	// init global data
-	_storeFile = vscode.Uri.parse('memfs:' + context.extensionUri.fsPath + '/storeFile.csv');
+	_storeFile = vscode.Uri.parse('memfs:' + context.extensionUri.fsPath + '/codeReviewer.csv');
 	_extensionUri = context.extensionUri;
 
 	context.subscriptions.push(vscode.commands.registerCommand('codeReviewer.codeReviewer', () => {
@@ -27,8 +27,8 @@ export function activate(context: vscode.ExtensionContext) {
 		openNewPanel();
 	}));
 	
-	// go to the file, and fix it
-	context.subscriptions.push(vscode.commands.registerCommand('codeReviewer.goFix', () => {
+	// go to the issues, and solve it
+	context.subscriptions.push(vscode.commands.registerCommand('codeReviewer.goResolve', () => {
 		if (vscode.window.activeTextEditor) {
 			_activeEditor = vscode.window.activeTextEditor;
 		}
@@ -37,12 +37,17 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 // open add mark panel
-function openNewPanel(markText?:string) {
+function openNewPanel(issueText?:string, startLine?:string|number, endLine?:string|number) {
 	const markWebViewPanel = vscode.window.createWebviewPanel('markdown.preview', 'Mark Bad Code',
 		{ preserveFocus: false, viewColumn: -2 },
 		{ enableCommandUris: true, enableScripts: true, enableFindWidget: true, localResourceRoots: [_extensionUri]
 	});
-	markWebViewPanel.webview.html = _getHtmlForWebview(markWebViewPanel.webview, markText);
+	if (!startLine && !endLine) {
+		const { start, end } = _activeEditor.selection;
+		startLine = start.line;
+		endLine = end.line;
+	}
+	markWebViewPanel.webview.html = _getHtmlForWebview(markWebViewPanel.webview, issueText, startLine, endLine);
 
 	markWebViewPanel.webview.onDidReceiveMessage(event => {
 		// colse the panel first
@@ -58,9 +63,8 @@ function openNewPanel(markText?:string) {
 			toastText('added successfully!');
 			return;
 		}
-		if (event.type === 'fixed') {
-			// console.log('fixed');
-			updateFile('fixed');
+		if (event.type === 'resolved') {
+			updateFile('resolved');
 		}
 	});
 	
@@ -96,9 +100,8 @@ function updateFile(type:string, noteTexts?:string) {
 			const { fileName } = _activeEditor.document;
 			storeString += `unresolved;${fileName};${start.line},${start.character};${end.line},${end.character};${noteTexts};\n`;
 		} else {
-			// fixed
 			const lineArray = storeString.split(';\n');
-			lineArray[_fixActiveLine] = lineArray[_fixActiveLine].replace('unresolved', 'fixed');
+			lineArray[_toResolveLine] = lineArray[_toResolveLine].replace('unresolved', 'resolved');
 			storeString = lineArray.join(';\n');
 		}
 		fs.writeFile(_storeFile.path, storeString, error => { error && console.log('write error' + error); });
@@ -114,33 +117,32 @@ function openTheFile() {
 		if (error && error.code === 'ENOENT') {
 			return;
 		}
-		_fixActiveLine = _activeEditor.selection.active.line;
+		_toResolveLine = _activeEditor.selection.active.line;
 		const fileString = Buffer.from(JSON.parse(JSON.stringify(uint8Arr)).data).toString('utf8');
 		const lineArray = fileString.split(';\n');
-		const lineStr = lineArray[_fixActiveLine];
+		const lineStr = lineArray[_toResolveLine];
 		const strArray = lineStr.split(';');
-		// open the mark file
-		const doc = await vscode.workspace.openTextDocument(vscode.Uri.parse('file:' + strArray[1]));
-		await vscode.window.showTextDocument(doc, { preview: false });
+		// const doc = await vscode.workspace.openTextDocument(vscode.Uri.parse('file:' + strArray[1]));
+		// await vscode.window.showTextDocument(doc, { preview: false });
 
-		// hight light mark codes
-		console.log('strArray[0]', strArray);
 		if (strArray[0] === 'unresolved') {
+			const doc = await vscode.workspace.openTextDocument(vscode.Uri.parse('file:' + strArray[1]));
+			await vscode.window.showTextDocument(doc, { preview: false });
 			const startChar = strArray[2].split(',');
 			const endChar = strArray[3].split(',');
 			const start = new vscode.Position(Number(startChar[0]), Number(startChar[1]));
 			const end = new vscode.Position(Number(endChar[0]), Number(endChar[1]));
 			hightlightCodes(start, end);
 			// const selection = new vscode.Selection(start, end);
-			openNewPanel(strArray[4]);
+			openNewPanel(strArray[4], startChar[0], endChar[0]);
 		} else {
-			// toastText('aaaaaaaaaa');
-			vscode.commands.executeCommand('vscode.diff');
+			// show differents with the previous version
+			vscode.commands.executeCommand('gitlens.diffWithPrevious', vscode.Uri.parse('file:' + strArray[1]));
 		}
 	});
 }
 
-function _getHtmlForWebview(webview: vscode.Webview, markText?: string) {
+function _getHtmlForWebview(webview: vscode.Webview, issueText?: string, startLine?:string|number, endLine?:string|number) {
 	const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(_extensionUri, 'src', 'mark.js'));
 	const styleResetUri = webview.asWebviewUri(vscode.Uri.joinPath(_extensionUri, 'src', 'mark.css'));
 
@@ -154,15 +156,15 @@ function _getHtmlForWebview(webview: vscode.Webview, markText?: string) {
 			</head>
 			<body>
 				<div class="form">
-					<div class="marginTop">file path: ${_activeEditor.document.fileName}</div>
-					<div></div>
+					<div class="marginTop">file: ${_activeEditor.document.fileName}</div>
+					<div class="marginTop">position: from line ${startLine} to line ${endLine}</div>
 					<div class="marginTop">notes:</div>
 					<div>
-						<textarea id="notes" maxlength="100">${markText || ''}</textarea>
+						<textarea id="notes" maxlength="100">${issueText || ''}</textarea>
 					</div>
 					<div>
-						<button class="marginTop" id="add-mark-button" style="display:${markText ? 'none': 'block'}">Add Mark</button>
-						<button class="marginTop fixed" id="fixed-mark-button" style="display:${markText ? 'block': 'none'}">Fixed</button>
+						<button class="marginTop" id="add-mark-button" style="display:${issueText ? 'none': 'block'}">Add Issue</button>
+						<button class="marginTop" id="resolve-mark-button" style="display:${issueText ? 'block': 'none'}">Resolved</button>
 					</div>
 				</div>
 				<script src="${scriptUri}"></script>

@@ -1,42 +1,38 @@
-# Welcome to your VS Code Extension
 
-## What's in the folder
+# codeReviewer
+codeReviewer 是一个用来做代码评审的扩展，可标注问题代码，同步至代码仓库。开发人员同步数据后，可修改对应的代码问题，再提交评审。
+# 如何使用 ?
+### 代码评审人员
+1. 选中问题代码
+2. 在问题代码上点击鼠标右键，选择 '标注问题代码 (codeReviewer)'
+3. 在弹出的窗口中填入信息，点击'Add Issue（首次保存时将在项目根路径下生成一个codeReviewer.csv文件）
+4. 提交codeReviewer.csv文件至仓库中，即完成代码审核
+5. 待开发人员修改完成后，拉取最新的codeReviewer.csv文件，在文件中任一行点击鼠标右键，选择'跳转问题代码 (codeReviewer)'查看文件对比。
+### 代码开发人员
+1. 拉取仓库中codeReviewer.csv文件，并打开
+2. 在显示为 unresolved 的行中，点击鼠标右键，选择 '跳转问题代码 (codeReviewer)'
+3. 修改完之后，点击弹出窗口中的'Resolved'按钮
+4. 提交codeReviewer.csv文件至仓库中，即完成修改。
 
-* This folder contains all of the files necessary for your extension.
-* `package.json` - this is the manifest file in which you declare your extension and command.
-  * The sample plugin registers a command and defines its title and command name. With this information VS Code can show the command in the command palette. It doesn’t yet need to load the plugin.
-* `src/extension.ts` - this is the main file where you will provide the implementation of your command.
-  * The file exports one function, `activate`, which is called the very first time your extension is activated (in this case by executing the command). Inside the `activate` function we call `registerCommand`.
-  * We pass the function containing the implementation of the command as the second parameter to `registerCommand`.
+--------
+### CodeReviewer is a extension for code review.
 
-## Get up and running straight away
+# How to use ?
+### how to review code
+1. choose those bad codes
+2. right click on the selection
+3. select `'codeReviewer'` in the menu
+4. click 'Add Issue' button, then the extention will create a file named 'codeReviewer.csv' in the project
+5. commit the file (codeReviewer.csv) to repository, so others can solve those problems.
+### how to resolve those review code issues
+1. open the file 'codeReviewer.csv'
+2. right click on a 'unresolved' line
+3. select `'codeReviewer'` in the menu
+4. click 'Resolved' button after you resolved the issue
+5. update the file (codeReviewer.csv) to repository, so code reviewer can check your modification.
 
-* Press `F5` to open a new window with your extension loaded.
-* Run your command from the command palette by pressing (`Ctrl+Shift+P` or `Cmd+Shift+P` on Mac) and typing `Hello World`.
-* Set breakpoints in your code inside `src/extension.ts` to debug your extension.
-* Find output from your extension in the debug console.
+## For more information
 
-## Make changes
+* [Github](https://github.com/xuebinWu/codeReviewer.git)
 
-* You can relaunch the extension from the debug toolbar after changing code in `src/extension.ts`.
-* You can also reload (`Ctrl+R` or `Cmd+R` on Mac) the VS Code window with your extension to load your changes.
-
-
-## Explore the API
-
-* You can open the full set of our API when you open the file `node_modules/@types/vscode/index.d.ts`.
-
-## Run tests
-
-* Open the debug viewlet (`Ctrl+Shift+D` or `Cmd+Shift+D` on Mac) and from the launch configuration dropdown pick `Extension Tests`.
-* Press `F5` to run the tests in a new window with your extension loaded.
-* See the output of the test result in the debug console.
-* Make changes to `src/test/suite/extension.test.ts` or create new test files inside the `test/suite` folder.
-  * The provided test runner will only consider files matching the name pattern `**.test.ts`.
-  * You can create folders inside the `test` folder to structure your tests any way you want.
-
-## Go further
-
- * Reduce the extension size and improve the startup time by [bundling your extension](https://code.visualstudio.com/api/working-with-extensions/bundling-extension).
- * [Publish your extension](https://code.visualstudio.com/api/working-with-extensions/publishing-extension) on the VSCode extension marketplace.
- * Automate builds by setting up [Continuous Integration](https://code.visualstudio.com/api/working-with-extensions/continuous-integration).
+**Enjoy!**

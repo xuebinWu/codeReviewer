@@ -1,70 +1,38 @@
-# helloworld README
 
-This is the README for your extension "helloworld". After writing up a brief description, we recommend including the following sections.
+# codeReviewer
+codeReviewer 是一个用来做代码评审的扩展，可标注问题代码，同步至代码仓库。开发人员同步数据后，可修改对应的代码问题，再提交评审。
+# 如何使用 ?
+### 代码评审人员
+1. 选中问题代码
+2. 在问题代码上点击鼠标右键，选择 '标注问题代码 (codeReviewer)'
+3. 在弹出的窗口中填入信息，点击'Add Issue（首次保存时将在项目根路径下生成一个codeReviewer.csv文件）
+4. 提交codeReviewer.csv文件至仓库中，即完成代码审核
+5. 待开发人员修改完成后，拉取最新的codeReviewer.csv文件，在文件中任一行点击鼠标右键，选择'跳转问题代码 (codeReviewer)'查看文件对比。
+### 代码开发人员
+1. 拉取仓库中codeReviewer.csv文件，并打开
+2. 在显示为 unresolved 的行中，点击鼠标右键，选择 '跳转问题代码 (codeReviewer)'
+3. 修改完之后，点击弹出窗口中的'Resolved'按钮
+4. 提交codeReviewer.csv文件至仓库中，即完成修改。
 
-## Features
+--------
+### CodeReviewer is a extension for code review.
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+# How to use ?
+### how to review code
+1. choose those bad codes
+2. right click on the selection
+3. select `'codeReviewer'` in the menu
+4. click 'Add Issue' button, then the extention will create a file named 'codeReviewer.csv' in the project
+5. commit the file (codeReviewer.csv) to repository, so others can solve those problems.
+### how to resolve those review code issues
+1. open the file 'codeReviewer.csv'
+2. right click on a 'unresolved' line
+3. select `'codeReviewer'` in the menu
+4. click 'Resolved' button after you resolved the issue
+5. update the file (codeReviewer.csv) to repository, so code reviewer can check your modification.
 
-For example if there is an image subfolder under your extension project workspace:
+## For more information
 
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+* [Github](http://code.visualstudio.com/docs/languages/markdown)
 
 **Enjoy!**

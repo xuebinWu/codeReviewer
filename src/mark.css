@@ -38,6 +38,7 @@ textarea {
 
 .marginTop {
   margin-top: 15px;
+  word-break: break-all;
 }
 
 button {
@@ -54,6 +55,3 @@ button {
   border-radius: 5px;
   color: #fff;
 }
-/* button.fixed {
-  margin-left: 20px;
-} */
