@@ -8,6 +8,7 @@ codeReviewer 是一个用来做代码评审的扩展，可标注问题代码，�
 3. 在弹出的窗口中填入信息，点击'Add Issue（首次保存时将在项目根路径下生成一个codeReviewer.csv文件）
 4. 提交codeReviewer.csv文件至仓库中，即完成代码审核
 5. 待开发人员修改完成后，拉取最新的codeReviewer.csv文件，在文件中任一行点击鼠标右键，选择'跳转问题代码 (codeReviewer)'查看文件对比。
+
 ### 代码开发人员
 1. 拉取仓库中codeReviewer.csv文件，并打开
 2. 在显示为 unresolved 的行中，点击鼠标右键，选择 '跳转问题代码 (codeReviewer)'

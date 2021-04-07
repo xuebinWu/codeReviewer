@@ -1,0 +1,35 @@
+.form {
+  margin: 0 auto;
+  width: 400px;
+  padding: 20px;
+  font-size: 14px;
+}
+
+textarea {
+  width: 400px;
+  height: 180px;
+  font: 1em sans-serif;
+  box-sizing: border-box;
+  border: 1px solid rgb(122,115,116);
+  border-radius: 5px;
+  vertical-align: top;
+}
+
+.marginTop {
+  margin-top: 15px;
+  word-break: break-all;
+}
+
+button {
+  background-color: #41b349;
+  border: none;
+  color: white;
+  padding: 8px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  color: #fff;
+}

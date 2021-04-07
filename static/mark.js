@@ -9,10 +9,9 @@
 		const notes = document.getElementById('notes').value;
 		vscode.postMessage({ type: 'add', value: notes });
 	});
-	
 	document.getElementById('resolve-mark-button').addEventListener('click', () => {
 		vscode.postMessage({ type: 'resolved' });
-});
+	});
 
 }());
 

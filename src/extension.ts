@@ -2,22 +2,25 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import * as fs from 'fs';
+import * as path from 'path';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executd
 
 let _activeEditor:vscode.TextEditor;
 let _storeFile:vscode.Uri;
-let _extensionUri:vscode.Uri;
 let _toResolveLine = 0;
 
 export function activate(context: vscode.ExtensionContext) {
 	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "codeReviewer" is now active!');
 
-	// init global data
-	_storeFile = vscode.Uri.parse('memfs:' + context.extensionUri.fsPath + '/codeReviewer.csv');
-	_extensionUri = context.extensionUri;
+	// init store file path
+	const workspaceFolders = vscode.workspace.workspaceFolders;
+	if (!workspaceFolders) {
+		return;
+	}
+	_storeFile = vscode.Uri.parse('memfs:' + workspaceFolders[0].uri.fsPath + '/codeReviewer.csv');
 
 	context.subscriptions.push(vscode.commands.registerCommand('codeReviewer.codeReviewer', () => {
 		// The code you place here will be executed every time your command is executed
@@ -38,10 +41,11 @@ export function activate(context: vscode.ExtensionContext) {
 
 // open add mark panel
 function openNewPanel(issueText?:string, startLine?:string|number, endLine?:string|number) {
-	const markWebViewPanel = vscode.window.createWebviewPanel('markdown.preview', 'Mark Bad Code',
+	const markWebViewPanel = vscode.window.createWebviewPanel(
+		'markdown.preview', 'Mark Bad Code',
 		{ preserveFocus: false, viewColumn: -2 },
-		{ enableCommandUris: true, enableScripts: true, enableFindWidget: true, localResourceRoots: [_extensionUri]
-	});
+		{ enableCommandUris: true, enableScripts: true, enableFindWidget: true}
+	);
 	if (!startLine && !endLine) {
 		const { start, end } = _activeEditor.selection;
 		startLine = start.line;
@@ -143,16 +147,18 @@ function openTheFile() {
 }
 
 function _getHtmlForWebview(webview: vscode.Webview, issueText?: string, startLine?:string|number, endLine?:string|number) {
-	const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(_extensionUri, 'src', 'mark.js'));
-	const styleResetUri = webview.asWebviewUri(vscode.Uri.joinPath(_extensionUri, 'src', 'mark.css'));
+	// const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(_extensionUri, 'src', 'mark.js'));
+	// const styleResetUri = webview.asWebviewUri(vscode.Uri.joinPath(_extensionUri, 'src', 'mark.css'));
+	const scriptUri = webview.asWebviewUri(vscode.Uri.file(path.resolve(__dirname, '../static/mark.js')));
+	const styleResetUri = webview.asWebviewUri(vscode.Uri.file(path.resolve(__dirname, '../static/mark.css')));
 
 	return `<!DOCTYPE html>
-			<html lang="en">
+		<html lang="en">
 			<head>
 				<meta charset="UTF-8">
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<link href="${styleResetUri}" rel="stylesheet">
 				<title>Mark Bad Codes</title>
+				<link href="${styleResetUri}" rel="stylesheet">
 			</head>
 			<body>
 				<div class="form">
@@ -169,7 +175,7 @@ function _getHtmlForWebview(webview: vscode.Webview, issueText?: string, startLi
 				</div>
 				<script src="${scriptUri}"></script>
 			</body>
-			</html>`;
+		</html>`;
 }
 
 
