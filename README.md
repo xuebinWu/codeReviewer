@@ -33,6 +33,6 @@ codeReviewer 是一个用来做代码评审的扩展，可标注问题代码，�
 
 ## For more information
 
-* [Github](http://code.visualstudio.com/docs/languages/markdown)
+* [Github](https://github.com/xuebinWu/codeReviewer.git)
 
 **Enjoy!**

@@ -1,10 +1,10 @@
 .form {
   /* 居中表单 */
   margin: 0 auto;
-  width: 320px;
+  width: 400px;
   /* 显示表单的轮廓 */
   padding: 20px;
-  border: 1px solid rgb(122,115,116);
+  /* border: 1px solid rgb(122,115,116); */
   /* border-radius: 15px; */
   font-size: 14px;
   /* color: rgb(122,115,116); */
@@ -16,7 +16,7 @@ input, textarea {
   font: 1em sans-serif;
 
   /* 使所有文本输入框大小相同 */
-  width: 320px;
+  width: 400px;
   box-sizing: border-box;
 
   /* 调整文本输入框的边框样式 */
@@ -43,7 +43,7 @@ textarea {
 
 button {
   /* 这个外边距的大小与label和文本输入框之间的间距差不多 */
-  background-color: #4CAF50; /* Green */
+  background-color: #41b349; /* Green */
   border: none;
   color: white;
   padding: 8px 15px;
