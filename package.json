@@ -1,7 +1,7 @@
 {
 	"name": "codereviewer",
 	"displayName": "codeReviewer",
-	"description": "a extention for code view",
+	"description": "代码评审,代码审核,code review",
 	"version": "0.0.4",
 	"publisher": "xuebin",
 	"engines": {
