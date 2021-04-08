@@ -102,7 +102,7 @@ function updateFile(type:string, noteTexts?:string) {
 		if (type === 'add') {
 			const { start, end } = _activeEditor.selection;
 			const { fileName } = _activeEditor.document;
-			storeString += `unresolved;${fileName};${start.line},${start.character};${end.line},${end.character};${noteTexts};\n`;
+			storeString += `unresolved;,${fileName};,${start.line},${start.character};,${end.line},${end.character};,${noteTexts};\n`;
 		} else {
 			const lineArray = storeString.split(';\n');
 			lineArray[_toResolveLine] = lineArray[_toResolveLine].replace('unresolved', 'resolved');
@@ -125,7 +125,7 @@ function openTheFile() {
 		const fileString = Buffer.from(JSON.parse(JSON.stringify(uint8Arr)).data).toString('utf8');
 		const lineArray = fileString.split(';\n');
 		const lineStr = lineArray[_toResolveLine];
-		const strArray = lineStr.split(';');
+		const strArray = lineStr.split(';,');
 		// const doc = await vscode.workspace.openTextDocument(vscode.Uri.parse('file:' + strArray[1]));
 		// await vscode.window.showTextDocument(doc, { preview: false });
 
@@ -136,10 +136,14 @@ function openTheFile() {
 			const endChar = strArray[3].split(',');
 			const start = new vscode.Position(Number(startChar[0]), Number(startChar[1]));
 			const end = new vscode.Position(Number(endChar[0]), Number(endChar[1]));
+			if (vscode.window.activeTextEditor) {
+				_activeEditor = vscode.window.activeTextEditor;
+				_activeEditor.revealRange(new vscode.Range(start, end));
+			}
 			hightlightCodes(start, end);
-			// const selection = new vscode.Selection(start, end);
 			openNewPanel(strArray[4], startChar[0], endChar[0]);
 		} else {
+			// resolved
 			// show differents with the previous version
 			vscode.commands.executeCommand('gitlens.diffWithPrevious', vscode.Uri.parse('file:' + strArray[1]));
 		}

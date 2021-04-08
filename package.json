@@ -1,8 +1,8 @@
 {
 	"name": "codereviewer",
 	"displayName": "codeReviewer",
-	"description": "",
-	"version": "0.0.2",
+	"description": "a extention for code view",
+	"version": "0.0.4",
 	"publisher": "xuebin",
 	"engines": {
 		"vscode": "^1.50.0"
