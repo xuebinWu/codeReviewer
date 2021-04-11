@@ -101,7 +101,10 @@ function updateFile(type:string, noteTexts?:string) {
 		}
 		if (type === 'add') {
 			const { start, end } = _activeEditor.selection;
-			const { fileName } = _activeEditor.document;
+			let { fileName } = _activeEditor.document;
+			if (vscode.workspace.workspaceFolders) {
+				fileName = fileName.replace(vscode.workspace.workspaceFolders[0].uri.fsPath, '');
+			}
 			storeString += `unresolved;,${fileName};,${start.line},${start.character};,${end.line},${end.character};,${noteTexts};\n`;
 		} else {
 			const lineArray = storeString.split(';\n');
@@ -128,9 +131,13 @@ function openTheFile() {
 		const strArray = lineStr.split(';,');
 		// const doc = await vscode.workspace.openTextDocument(vscode.Uri.parse('file:' + strArray[1]));
 		// await vscode.window.showTextDocument(doc, { preview: false });
+		let filePath = strArray[1];
+		if (vscode.workspace.workspaceFolders) {
+			filePath = vscode.workspace.workspaceFolders[0].uri.fsPath + filePath;
+		}
 
 		if (strArray[0] === 'unresolved') {
-			const doc = await vscode.workspace.openTextDocument(vscode.Uri.parse('file:' + strArray[1]));
+			const doc = await vscode.workspace.openTextDocument(vscode.Uri.parse('file:' + filePath));
 			await vscode.window.showTextDocument(doc, { preview: false });
 			const startChar = strArray[2].split(',');
 			const endChar = strArray[3].split(',');
@@ -145,7 +152,7 @@ function openTheFile() {
 		} else {
 			// resolved
 			// show differents with the previous version
-			vscode.commands.executeCommand('gitlens.diffWithPrevious', vscode.Uri.parse('file:' + strArray[1]));
+			vscode.commands.executeCommand('gitlens.diffWithPrevious', vscode.Uri.parse('file:' + filePath));
 		}
 	});
 }
@@ -170,7 +177,7 @@ function _getHtmlForWebview(webview: vscode.Webview, issueText?: string, startLi
 					<div class="marginTop">position: from line ${startLine} to line ${endLine}</div>
 					<div class="marginTop">notes:</div>
 					<div>
-						<textarea id="notes" maxlength="100">${issueText || ''}</textarea>
+						<textarea id="notes" maxlength="100" autofocus>${issueText || ''}</textarea>
 					</div>
 					<div>
 						<button class="marginTop" id="add-mark-button" style="display:${issueText ? 'none': 'block'}">Add Issue</button>
