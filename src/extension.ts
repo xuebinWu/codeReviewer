@@ -98,14 +98,17 @@ function updateFile(type:string, noteTexts?:string) {
 	fs.readFile(_storeFile.path, (error, uint8Arr) => {
 		if (uint8Arr) {
 			storeString = Buffer.from(JSON.parse(JSON.stringify(uint8Arr)).data).toString('utf8');
-		}
+		} else {
+      storeString += '解决情况,文件路径,开始位置,结束位置,修改意见,日期;\n'
+    }
 		if (type === 'add') {
 			const { start, end } = _activeEditor.selection;
 			let { fileName } = _activeEditor.document;
 			if (vscode.workspace.workspaceFolders) {
 				fileName = fileName.replace(vscode.workspace.workspaceFolders[0].uri.fsPath, '');
 			}
-			storeString += `unresolved;,${fileName};,${start.line},${start.character};,${end.line},${end.character};,${noteTexts};\n`;
+      const date = (new Date()).toLocaleDateString();
+			storeString += `unresolved;,${fileName};,${start.line}-${start.character};,${end.line}-${end.character};,${noteTexts};,${date};\n`;
 		} else {
 			const lineArray = storeString.split(';\n');
 			lineArray[_toResolveLine] = lineArray[_toResolveLine].replace('unresolved', 'resolved');
@@ -139,8 +142,8 @@ function openTheFile() {
 		if (strArray[0] === 'unresolved') {
 			const doc = await vscode.workspace.openTextDocument(vscode.Uri.parse('file:' + filePath));
 			await vscode.window.showTextDocument(doc, { preview: false });
-			const startChar = strArray[2].split(',');
-			const endChar = strArray[3].split(',');
+			const startChar = strArray[2].split('-');
+			const endChar = strArray[3].split('-');
 			const start = new vscode.Position(Number(startChar[0]), Number(startChar[1]));
 			const end = new vscode.Position(Number(endChar[0]), Number(endChar[1]));
 			if (vscode.window.activeTextEditor) {
@@ -149,7 +152,7 @@ function openTheFile() {
 			}
 			hightlightCodes(start, end);
 			openNewPanel(strArray[4], startChar[0], endChar[0]);
-		} else {
+		} else if (strArray[0] === 'resolved') {
 			// resolved
 			// show differents with the previous version
 			vscode.commands.executeCommand('gitlens.diffWithPrevious', vscode.Uri.parse('file:' + filePath));
