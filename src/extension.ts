@@ -129,7 +129,7 @@ function openTheFile() {
 		}
 		_toResolveLine = _activeEditor.selection.active.line;
 		const fileString = Buffer.from(JSON.parse(JSON.stringify(uint8Arr)).data).toString('utf8');
-		const lineArray = fileString.split(';\n');
+		const lineArray = fileString.split('\n');
 		const lineStr = lineArray[_toResolveLine];
 		const strArray = lineStr.split(';,');
 		// const doc = await vscode.workspace.openTextDocument(vscode.Uri.parse('file:' + strArray[1]));
