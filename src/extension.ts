@@ -99,7 +99,7 @@ function updateFile(type:string, noteTexts?:string) {
 		if (uint8Arr) {
 			storeString = Buffer.from(JSON.parse(JSON.stringify(uint8Arr)).data).toString('utf8');
 		} else {
-      storeString += '解决情况,文件路径,开始位置,结束位置,修改意见,日期;\n'
+      storeString += '解决情况,文件路径,开始位置,结束位置,修改意见,日期;\r\n'
     }
 		if (type === 'add') {
 			const { start, end } = _activeEditor.selection;
@@ -108,11 +108,11 @@ function updateFile(type:string, noteTexts?:string) {
 				fileName = fileName.replace(vscode.workspace.workspaceFolders[0].uri.fsPath, '');
 			}
       const date = (new Date()).toLocaleDateString();
-			storeString += `unresolved;,${fileName};,${start.line}-${start.character};,${end.line}-${end.character};,${noteTexts};,${date};\r`;
+			storeString += `unresolved;,${fileName};,${start.line}-${start.character};,${end.line}-${end.character};,${noteTexts};,${date};\r\n`;
 		} else {
-			const lineArray = storeString.split(';\r');
+			const lineArray = storeString.split(';\r\n');
 			lineArray[_toResolveLine] = lineArray[_toResolveLine].replace('unresolved', 'resolved');
-			storeString = lineArray.join(';\r');
+			storeString = lineArray.join(';\r\n');
 		}
 		fs.writeFile(_storeFile.path, storeString, error => { error && console.log('write error' + error); });
 	});
