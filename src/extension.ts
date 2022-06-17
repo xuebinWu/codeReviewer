@@ -108,11 +108,11 @@ function updateFile(type:string, noteTexts?:string) {
 				fileName = fileName.replace(vscode.workspace.workspaceFolders[0].uri.fsPath, '');
 			}
       const date = (new Date()).toLocaleDateString();
-			storeString += `unresolved;,${fileName};,${start.line}-${start.character};,${end.line}-${end.character};,${noteTexts};,${date};\n`;
+			storeString += `unresolved;,${fileName};,${start.line}-${start.character};,${end.line}-${end.character};,${noteTexts};,${date};\r`;
 		} else {
-			const lineArray = storeString.split(';\n');
+			const lineArray = storeString.split(';\r');
 			lineArray[_toResolveLine] = lineArray[_toResolveLine].replace('unresolved', 'resolved');
-			storeString = lineArray.join(';\n');
+			storeString = lineArray.join(';\r');
 		}
 		fs.writeFile(_storeFile.path, storeString, error => { error && console.log('write error' + error); });
 	});

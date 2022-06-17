@@ -2,7 +2,7 @@
 	"name": "codereviewer",
 	"displayName": "codeReviewer",
 	"description": "code review , 代码评审, 代码审核",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"publisher": "xuebin",
 	"engines": {
 		"vscode": "^1.50.0"
