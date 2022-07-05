@@ -1,4 +1,3 @@
-resolved;d:\codes\wisdom-upper-app\src\views\allocation\add.vue;210,6;223,7;qqqqq;
-resolved;d:\codes\wisdom-upper-app\src\views\allocation\index.vue;44,4;54,6;ssssssss;
-unresolved;d:\codes\wisdom-upper-app\src\views\allocation\index.vue;98,6;102,8;rrrrrrrrrrrrr;
-unresolved;d:\codes\wisdom-upper-app\src\views\allocation\index.vue;89,6;93,8;aaaaaaaazv  asfdwe 242 asffasfaf;
+解决情况,文件路径,开始位置,结束位置,修改意见,日期;
+unresolved;,\src\extension.ts;,165-1;,166-108;,test;,2022/6/20;
+resolved;,\src\extension.ts;,59-2;,62-3;,测试;,2022/6/20;

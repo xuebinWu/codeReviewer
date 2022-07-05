@@ -155,7 +155,16 @@ function openTheFile() {
 		} else if (strArray[0] === 'resolved') {
 			// resolved
 			// show differents with the previous version
-			vscode.commands.executeCommand('gitlens.diffWithPrevious', vscode.Uri.parse('file:' + filePath));
+			// vscode.commands.executeCommand('gitlens.diffWithPrevious', vscode.Uri.parse('file:' + filePath));
+      // vscode.commands.executeCommand('gitlens.showQuickFileHistory', vscode.Uri.parse('file:' + filePath));
+			// vscode.commands.executeCommand('gitlens.showFileHistoryView', vscode.Uri.parse('file:' + filePath));
+      vscode.commands.getCommands().then(res => {
+        if (res.includes('gitlens.showQuickFileHistory')) {
+          vscode.commands.executeCommand('gitlens.showQuickFileHistory', vscode.Uri.parse('file:' + filePath));
+        } else {
+          toastText('请先安装gitlens插件!');
+        }
+      })
 		}
 	});
 }
